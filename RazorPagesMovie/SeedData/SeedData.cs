@@ -11,7 +11,7 @@ namespace RazorPagesMovie.Models
                 serviceProvider.GetRequiredService<
                     DbContextOptions<RazorPagesMovieContext>>()))
             {
-                if (context == null || context.Movie == null)
+                if (context == null || context.Movie == null) //|| context.RegisterViewModel == null)
                 {
                     throw new ArgumentNullException("Null RazorPagesMovieContext");
                 }

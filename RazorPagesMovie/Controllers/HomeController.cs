@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using RazorPagesMovie.Models;
 
-namespace Controllers
+namespace RazorPagesMovie.Controllers
 {
     public class HomeController : Controller
     {

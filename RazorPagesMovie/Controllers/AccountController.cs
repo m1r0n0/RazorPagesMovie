@@ -1,10 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RazorPagesMovie.ViewModels;
 using RazorPagesMovie.Models;
-using Microsoft.AspNetCore.Identity;
+using RazorPagesMovie.ViewModels;
 
-namespace WebApp.Controllers
+namespace RazorPagesMovie.Controllers
 {
     public class AccountController : Controller
     {
@@ -16,37 +15,37 @@ namespace WebApp.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-            User user = new User { Email = model.Email, UserName = model.Email, Year = model.Year };
-            // добавляем пользователя
-            var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
-                // установка куки
-                await _signInManager.SignInAsync(user, false);
-                Console.WriteLine("Register succ");
-                return RedirectToAction("Index", "Home");
-
-            }
-            else
-            {
-                foreach (var error in result.Errors)
+                User user = new User { Email = model.Email, UserName = model.Email, Year = model.Year };
+                // добавляем пользователя
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                    Console.WriteLine("Register unsucc");
+                    // установка куки
+                    await _signInManager.SignInAsync(user, false);
+                    return RedirectToAction("Index", "Home");
+
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
                 }
             }
-        //}
-            return View();//View(model);
+            return View(model);
+        }
     }
-}
 }

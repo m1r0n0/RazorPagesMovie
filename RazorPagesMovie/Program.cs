@@ -8,12 +8,10 @@ using System.Configuration;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<RazorPagesMovieContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("RazorPagesMovieContext") ?? throw new InvalidOperationException("Connection string 'RazorPagesMovieContext' not found.")));
-
-//buext") ?? throw new InvalidOperationException("Connection string 'ApplicationContext' not found.")));
-
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<RazorPagesMovieContext>();
@@ -35,6 +33,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseDeveloperExceptionPage();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -49,6 +49,10 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 });
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 
